@@ -418,11 +418,11 @@ Function Update-XenTools {
    if($osVersion -lt "6.3") {
       Write-Log -value "Installing Xen Tools 6.2"
       $path = $($d.wD, "xs-tools-6.2.0.zip" -join '\')
-      $xenworked = $false
-      while (-not $xenworked) {
+      $xencount = 0
+      while ($xencount -lt 5) {
       try{
+      $xencount +=1
       Download-File -url "http://1631170f67e7daa50e95-7dd27d3f3410187707440a293c5d1c09.r5.cf1.rackcdn.com/xs-tools-6.2.0.zip" -path $path -ErrorAction Stop
-      $xenworked = true
       }
       catch {
       Write-EventLog -LogName DevOps -Source BasePrep -EntryType Error -EventId 1002 -Message "Failed to Download Xentools `n $($_.Exception.Message)"
