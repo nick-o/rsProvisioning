@@ -159,7 +159,10 @@ Function Install-DSC {
          if ( $((Get-WinEvent Microsoft-Windows-DSC/Operational | Select -First 1).id) -eq "4104" -or 
               ($Pending -and (-not $ConsistencyRunning))) {
             Get-ScheduledTask -TaskName "Consistency" | Start-ScheduledTask
-            $StartConsistency = $true
+            if ($Pending -and (-not $ConsistencyRunning)) 
+            {
+               $StartConsistency = $true
+            }
          }
          if($i -gt 5 -or $StartConsistency) {
             $Message = "Waiting for Client to install DSC configuration"
